@@ -24,7 +24,7 @@ services:
       - JWT_REFRESH_SECRET=docker-refresh-secret-change-in-production
       - PORT=5000
       - NODE_ENV=production
-      - CORS_ORIGIN=http://localhost:5173
+      # - CORS_ORIGIN=http://localhost:5173 (Not needed for unified deployment)
     depends_on:
       - mongodb
     restart: unless-stopped

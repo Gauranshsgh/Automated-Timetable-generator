@@ -188,9 +188,7 @@ export default function DashboardPage() {
                     style={{ padding: '6px', fontSize: '10px' }}
                     onClick={(e) => {
                       e.stopPropagation();
-                      if (confirm('Delete this variation permanently?')) {
-                        deleteVersion.mutate(ver._id);
-                      }
+                      deleteVersion.mutate(ver._id);
                     }}
                     title="Delete Variation"
                     disabled={deleteVersion.isPending}
