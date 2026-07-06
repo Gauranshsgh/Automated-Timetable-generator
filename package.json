@@ -1,0 +1,26 @@
+{
+  "name": "timetable-generator",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Automated Timetable Generator — MERN Stack with Matrix-Based Constraint Validation",
+  "workspaces": [
+    "types",
+    "server",
+    "client"
+  ],
+  "scripts": {
+    "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\"",
+    "dev:server": "npm run dev --workspace=server",
+    "dev:client": "npm run dev --workspace=client",
+    "build": "npm run build --workspace=types && npm run build --workspace=server && npm run build --workspace=client",
+    "test": "npm run test --workspace=server",
+    "test:engine": "npm run test:engine --workspace=server",
+    "lint": "npm run lint --workspace=server && npm run lint --workspace=client",
+    "seed": "npm run seed --workspace=server",
+    "benchmark": "npm run benchmark --workspace=server"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2",
+    "typescript": "^5.8.3"
+  }
+}

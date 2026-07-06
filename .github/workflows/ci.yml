@@ -1,0 +1,45 @@
+name: CI — Timetable Generator
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build types
+        run: npm run build --workspace=types
+
+      - name: Run engine tests
+        run: npm run test:engine --workspace=server
+
+      - name: Run all server tests
+        run: npm run test --workspace=server
+
+      - name: Build client
+        run: npm run build --workspace=client
+
+  deploy:
+    needs: test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Deploy notification
+        run: echo "✅ All tests passed. Deploy to Vercel/Render from their respective dashboards."

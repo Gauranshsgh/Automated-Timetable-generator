@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  mongodb:
+    image: mongo:7
+    container_name: timetable-mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    environment:
+      MONGO_INITDB_DATABASE: timetable-generator
+
+  server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: timetable-server
+    ports:
+      - "5000:5000"
+    environment:
+      - MONGODB_URI=mongodb://mongodb:27017/timetable-generator
+      - JWT_SECRET=docker-secret-change-in-production
+      - JWT_REFRESH_SECRET=docker-refresh-secret-change-in-production
+      - PORT=5000
+      - NODE_ENV=production
+      - CORS_ORIGIN=http://localhost:5173
+    depends_on:
+      - mongodb
+    restart: unless-stopped
+
+volumes:
+  mongo_data:
