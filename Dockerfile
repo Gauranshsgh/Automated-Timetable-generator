@@ -3,23 +3,13 @@ FROM node:22-alpine AS builder
 
 WORKDIR /app
 
-# Copy package files
-COPY package.json package-lock.json* ./
-COPY types/package.json ./types/
-COPY server/package.json ./server/
-COPY client/package.json ./client/
+# Copy all source files
+COPY . .
 
-# Install dependencies
-RUN npm install --workspace=types --workspace=server --workspace=client
+# Install all dependencies (npm workspaces will handle symlinks)
+RUN npm install
 
-# Copy source code
-COPY types/ ./types/
-COPY server/ ./server/
-COPY client/ ./client/
-COPY tsconfig.base.json ./
-COPY .env.example ./.env
-
-# Build
+# Build workspaces
 RUN npm run build --workspace=types
 RUN npm run build --workspace=server
 RUN npm run build --workspace=client
