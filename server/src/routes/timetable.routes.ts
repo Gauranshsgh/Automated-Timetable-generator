@@ -81,7 +81,7 @@ timetableRouter.post('/generate', authenticate, authorize(UserRole.ADMIN, UserRo
     // Get locked/fixed slots
     const fixedConstraints = constraints.filter((c) => c.type === 'fixed_slot');
     const fixedAssignments: FixedAssignment[] = fixedConstraints.map((c) => ({
-      dayIndex: c.payload.day as number,
+      dayIndex: c.payload.day as unknown as number,
       timeBandIndex: c.payload.timeBandIndex as number,
       subjectCode: c.payload.subjectCode as string,
       subjectType: c.payload.subjectType as SubjectType,
@@ -96,7 +96,14 @@ timetableRouter.post('/generate', authenticate, authorize(UserRole.ADMIN, UserRo
       nonAllocatableTimeBands,
       requirements,
       fixedAssignments,
-      constraints: constraints.map((c) => c.toObject() as IConstraint),
+      constraints: constraints.map((c) => {
+        const obj = c.toObject();
+        return {
+          ...obj,
+          _id: obj._id.toString(),
+          institutionId: obj.institutionId.toString(),
+        } as unknown as IConstraint;
+      }),
       facultySubjectMap: new Map(),
     };
 
@@ -179,7 +186,7 @@ timetableRouter.post('/generate', authenticate, authorize(UserRole.ADMIN, UserRo
 
 // ─── SSE Progress Stream ─────────────────────────────────────
 timetableRouter.get('/generate/:jobId/progress', authenticate, (req: AuthRequest, res) => {
-  const { jobId } = req.params;
+  const jobId = req.params.jobId as string;
 
   res.writeHead(200, {
     'Content-Type': 'text/event-stream',

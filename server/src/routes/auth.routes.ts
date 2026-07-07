@@ -45,14 +45,14 @@ authRouter.post('/register', validate(registerSchema), async (req, res, next) =>
 
     const token = jwt.sign(
       { userId: user._id, role: user.role },
-      config.jwt.secret,
-      { expiresIn: config.jwt.expiresIn }
+      config.jwt.secret as jwt.Secret,
+      { expiresIn: config.jwt.expiresIn as any }
     );
 
     const refreshToken = jwt.sign(
       { userId: user._id },
-      config.jwt.refreshSecret,
-      { expiresIn: config.jwt.refreshExpiresIn }
+      config.jwt.refreshSecret as jwt.Secret,
+      { expiresIn: config.jwt.refreshExpiresIn as any }
     );
 
     res.status(201).json({
@@ -91,14 +91,14 @@ authRouter.post('/login', validate(loginSchema), async (req, res, next) => {
 
     const token = jwt.sign(
       { userId: user._id, role: user.role },
-      config.jwt.secret,
-      { expiresIn: config.jwt.expiresIn }
+      config.jwt.secret as jwt.Secret,
+      { expiresIn: config.jwt.expiresIn as any }
     );
 
     const refreshToken = jwt.sign(
       { userId: user._id },
-      config.jwt.refreshSecret,
-      { expiresIn: config.jwt.refreshExpiresIn }
+      config.jwt.refreshSecret as jwt.Secret,
+      { expiresIn: config.jwt.refreshExpiresIn as any }
     );
 
     res.json({

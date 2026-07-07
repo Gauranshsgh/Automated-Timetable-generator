@@ -178,10 +178,10 @@ export class ConstraintValidator {
     ) {
       // Match by both day and timeBandIndex if specified
       if (
-        day !== undefined &&
-        timeBandIndex !== undefined &&
-        placement.dayIndex === day &&
-        placement.timeBandIndex === timeBandIndex
+      day !== undefined &&
+      timeBandIndex !== undefined &&
+      placement.dayIndex === (day as unknown as number) &&
+      placement.timeBandIndex === timeBandIndex
       ) {
         return {
           constraintType: ConstraintType.FACULTY_UNAVAILABLE,
@@ -203,7 +203,7 @@ export class ConstraintValidator {
       placement.roomId === roomId &&
       day !== undefined &&
       timeBandIndex !== undefined &&
-      placement.dayIndex === day &&
+      placement.dayIndex === (day as unknown as number) &&
       placement.timeBandIndex === timeBandIndex
     ) {
       return {
@@ -255,7 +255,7 @@ export class ConstraintValidator {
     if (
       day !== undefined &&
       timeBandIndex !== undefined &&
-      placement.dayIndex === day &&
+      placement.dayIndex === (day as unknown as number) &&
       placement.timeBandIndex === timeBandIndex
     ) {
       if (
@@ -289,7 +289,7 @@ export class ConstraintValidator {
       timeBandIndex !== undefined
     ) {
       if (
-        placement.dayIndex !== day ||
+        placement.dayIndex !== (day as unknown as number) ||
         placement.timeBandIndex !== timeBandIndex
       ) {
         return {
